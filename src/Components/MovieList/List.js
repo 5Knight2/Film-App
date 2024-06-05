@@ -71,9 +71,9 @@ const List=()=>{
         <React.Fragment>
             <Container className={classes.container} fluid>
                
-            <Button onClick={startRetry} >Get Data</Button>
+            <Button onClick={startRetry} variant="secondary" >Get Data</Button>
   {}
-  {error!=false?<p>{error+ retry} <Button onClick={cancelRetry}>X</Button></p> :isLoading==true?<p>loading...</p>:<p><Items movies={movies}></Items></p>}
+  {error!=false?<p>{error+ retry} <Button onClick={cancelRetry} variant="danger">X</Button></p> :isLoading==true?<p>loading...</p>:<p><Items movies={movies}></Items></p>}
   
                         </Container>
         </React.Fragment>
