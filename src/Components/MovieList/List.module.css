@@ -1,0 +1,13 @@
+.container{
+ 
+   
+    display: block;
+    background-color: rgb(107, 145, 177);
+    min-height: fit-content;
+    max-width: 70%;
+    position: relative;
+    padding: 3px;
+    top:20px;
+    left:15%;
+    border-radius: 20px;
+}
