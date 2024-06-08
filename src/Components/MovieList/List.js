@@ -5,7 +5,7 @@ import Items from './Items'
 
 const List=()=>{
 
-    const url='https://swapi.dev/api/films/'
+    const url='https://react-http-7ffef-default-rtdb.firebaseio.com/movies.json'
     const [movies,setMovies]=useState([]);
     const [isLoading,setIsLoading]=useState(false);
     const [error,setError]=useState(false);
@@ -40,8 +40,21 @@ const List=()=>{
         let p=await fetch(url);
         if(!p.ok)throw new Error('Something went wrong!!')
         setError(false)
-        p=await p.json();
-        p=p.results.map((c)=>{return c.title})
+        let data=await p.json();
+
+        const movies=[]
+        for(let key in data){
+            movies.push(
+            {id:key,
+            title:data[key].title,
+            openingText:data[key].openingText,
+            releaseDate:data[key].releaseDate
+            }
+            )
+        }
+        console.log(movies)
+
+        p=movies.map((c)=>{return c.title})
         console.log(p)
         
         setMovies(p)
@@ -64,7 +77,7 @@ const List=()=>{
             if (retryTimeoutRef.current) {
               clearTimeout(retryTimeoutRef.current);
             }
-          }},[])
+          }},[1])
 
 
     return(

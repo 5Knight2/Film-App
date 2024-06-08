@@ -4,14 +4,37 @@ import classes from './MovieForm.module.css'
 
 
 const MovieForm =()=>{
+    const url='https://react-http-7ffef-default-rtdb.firebaseio.com/movies.json'
     const titleRef=useRef()
     const openingTextRef=useRef()
     const releaseDateRef=useRef()
+
+
+    const addMovieHandler=async(movie)=>{
+        try{
+            const response=await fetch(url,{
+                method:'POST',
+                body:JSON.stringify(movie),
+                headers:{
+                    'Content-Type':'application/json'
+                }
+
+            })
+            if(!response.ok)throw new Error('something went wrong')
+            const data=await response.json();
+
+           console.log(data)
+        }catch(err){
+            console.log(err.message)
+        }
+
+    }
+
 const submitForm=(e)=>{
     let data={title:titleRef.current.value,
     openingText:openingTextRef.current.value,
     releaseDate:releaseDateRef.current.value}
-console.log(data)
+addMovieHandler(data);
 }
     return(
         <Container className={classes.container} fluid>
