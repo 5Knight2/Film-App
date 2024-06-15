@@ -1,0 +1,8 @@
+.box1{
+    background-color: rgb(124, 124, 124);
+    border-radius:10px;
+    min-width: 50%;
+    margin:5px;
+    display: block;   
+
+}

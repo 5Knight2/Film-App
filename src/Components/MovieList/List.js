@@ -1,4 +1,4 @@
-import React, { useState,useRef, useEffect } from "react";
+import React, { useState,useRef, useEffect, useCallback } from "react";
 import { Button, Container } from "react-bootstrap";
 import classes from './List.module.css'
 import Items from './Items'
@@ -20,7 +20,7 @@ const List=()=>{
         if (retryTimeoutRef.current) {
             clearTimeout(retryTimeoutRef.current);
           }
-        console.log('retry cancelled',retry)
+        console.log('retry cancelled')
     }
     
     
@@ -31,9 +31,7 @@ const List=()=>{
        
     }
     
-    const getData=async()=>{
-    
-        
+    const getData=useCallback( async()=>{
         try{
             console.log('fetching')
             setIsLoading(true);
@@ -54,10 +52,9 @@ const List=()=>{
         }
         console.log(movies)
 
-        p=movies.map((c)=>{return c.title})
-        console.log(p)
+      
         
-        setMovies(p)
+        setMovies(movies)
         setIsLoading(false)
        
     }
@@ -70,7 +67,7 @@ const List=()=>{
     
     }
     
-    }
+    },[1])
     
     useEffect(()=>{getData();
         return () => {
@@ -80,13 +77,14 @@ const List=()=>{
           }},[1])
 
 
+
     return(
         <React.Fragment>
             <Container className={classes.container} fluid>
                
             <Button onClick={startRetry} variant="secondary" >Get Data</Button>
   {}
-  {error!=false?<p>{error+ retry} <Button onClick={cancelRetry} variant="danger">X</Button></p> :isLoading==true?<p>loading...</p>:<p><Items movies={movies}></Items></p>}
+  {error!=false?<p>{error+ retry} <Button onClick={cancelRetry} variant="danger">X</Button></p> :isLoading==true?<p>loading...</p>:<p className={classes.item}><Items movies={movies}></Items></p>}
   
                         </Container>
         </React.Fragment>
