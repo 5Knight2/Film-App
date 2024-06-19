@@ -3,7 +3,7 @@ import { Button, Container } from "react-bootstrap";
 import classes from './List.module.css'
 import Items from './Items'
 
-const List=()=>{
+const List=(props)=>{
 
     const url='https://react-http-7ffef-default-rtdb.firebaseio.com/movies.json'
     const [movies,setMovies]=useState([]);
@@ -11,7 +11,6 @@ const List=()=>{
     const [error,setError]=useState(false);
     const [retry,setRetry]=useState(true);
     const retryTimeoutRef=useRef();
-
 
 
 
@@ -74,9 +73,26 @@ const List=()=>{
             if (retryTimeoutRef.current) {
               clearTimeout(retryTimeoutRef.current);
             }
-          }},[1])
+          }},[props.dummy])
 
 
+
+          const deleteItem=useCallback(async(id)=>{
+            try{
+            const response=await fetch('https://react-http-7ffef-default-rtdb.firebaseio.com/movies/'+id+'.json',{method:'DELETE'})
+           if(response.ok){
+            const element=document.getElementById(id)
+            element.remove();
+           }
+           else{throw new Error('Something went wrong!!during deletion')}
+        }
+        catch(err){
+            console.log(err)
+        }
+        })
+          
+
+        console.log('dummy'+props.dummy);
 
     return(
         <React.Fragment>
@@ -84,7 +100,7 @@ const List=()=>{
                
             <Button onClick={startRetry} variant="secondary" >Get Data</Button>
   {}
-  {error!=false?<p>{error+ retry} <Button onClick={cancelRetry} variant="danger">X</Button></p> :isLoading==true?<p>loading...</p>:<p className={classes.item}><Items movies={movies}></Items></p>}
+  {error!=false?<p>{error+ retry} <Button onClick={cancelRetry} variant="danger">X</Button></p> :isLoading==true?<p>loading...</p>:<p className={classes.item}><Items movies={movies} delete={deleteItem}></Items></p>}
   
                         </Container>
         </React.Fragment>

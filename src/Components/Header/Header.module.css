@@ -1,0 +1,20 @@
+.header{
+    display: FLEX;
+    background-color: rgb(236, 241, 245);
+    min-height: fit-content;
+    max-width: 70%;
+    position: relative;
+    padding: 3px;
+    top:20px;
+    left:15%;
+  
+    border-radius: 20px;
+    margin-bottom: 30px;
+  
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  .active{
+    color: #8b2626;
+  }

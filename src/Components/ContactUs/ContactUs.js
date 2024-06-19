@@ -1,20 +1,19 @@
 import React, { useRef } from "react";
-import { Button, Container, FormLabel,Form, FormText, FormControl } from "react-bootstrap";
-import classes from './MovieForm.module.css'
+import { Button, Container, FormLabel,Form} from "react-bootstrap";
+import classes from './ContactUs.module.css'
 
-
-const MovieForm =(props)=>{
-    const url='https://react-http-7ffef-default-rtdb.firebaseio.com/movies.json'
+const ContactUs=(props)=>{
+    const url='https://react-http-7ffef-default-rtdb.firebaseio.com/contactus.json'
     const titleRef=useRef()
     const openingTextRef=useRef()
     const releaseDateRef=useRef()
 
 
-    const addMovieHandler=async(movie)=>{
+    const submitHandler=async(contactus)=>{
         try{
             const response=await fetch(url,{
                 method:'POST',
-                body:JSON.stringify(movie),
+                body:JSON.stringify(contactus),
                 headers:{
                     'Content-Type':'application/json'
                 }
@@ -26,7 +25,6 @@ const MovieForm =(props)=>{
                 releaseDateRef.current.value=''
                 openingTextRef.current.value=''
 
-                props.itemAdd();
             }
             const data=await response.json();
 
@@ -41,23 +39,24 @@ const submitForm=(e)=>{
     let data={title:titleRef.current.value,
     openingText:openingTextRef.current.value,
     releaseDate:releaseDateRef.current.value}
-addMovieHandler(data);
+submitHandler(data);
 }
     return(
         <Container className={classes.container} fluid>
             <Form className={classes.form}>
-                <FormLabel>Title :</FormLabel>
-                <FormControl type="text" className={classes.ip} ref={titleRef}></FormControl>
-                <FormLabel>Opening Text :</FormLabel>
-                <FormControl type="text" className={classes.ip+" "+classes.large} ref={openingTextRef}></FormControl>
-                <FormLabel>Release Date :</FormLabel>
-                <FormControl type="date" className={classes.ip} ref={releaseDateRef}></FormControl>
+                <FormLabel>Name :</FormLabel>
+                <Form.Control type="text" className={classes.ip} ref={titleRef}></Form.Control>
+                <FormLabel>Email Id :</FormLabel>
+                <Form.Control type='email' className={classes.ip} ref={openingTextRef}></Form.Control>
+                <FormLabel>Mobile number :</FormLabel>
+                <Form.Control type="Number" maxLength={10} className={classes.ip} ref={releaseDateRef}></Form.Control>
                 <Button className={classes.btn} onClick={submitForm}>Submit</Button>
             </Form>
                 
           
        </Container>
     )
+
 }
 
-export default MovieForm;
+export default ContactUs
