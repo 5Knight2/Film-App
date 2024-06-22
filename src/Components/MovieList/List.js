@@ -81,8 +81,16 @@ const List=(props)=>{
             try{
             const response=await fetch('https://react-http-7ffef-default-rtdb.firebaseio.com/movies/'+id+'.json',{method:'DELETE'})
            if(response.ok){
-            const element=document.getElementById(id)
-            element.remove();
+
+             setMovies(
+          (curr)=>{const a=curr.filter(
+            (c,i,a)=>{
+            return(!(c.id==id))})
+          console.log(a)
+        return a;}
+             
+             )
+           
            }
            else{throw new Error('Something went wrong!!during deletion')}
         }

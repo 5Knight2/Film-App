@@ -1,5 +1,6 @@
 import React from "react";
 import classes from './Items.module.css';
+import {Link} from 'react-router-dom'
 import { Button } from "react-bootstrap";
 
 const Items = (props) => {
@@ -11,7 +12,8 @@ const Items = (props) => {
     const List = props.movies.map((c) => {
         return (
             <div className={classes.box1} id={c.id} key={c.id}>
-                <h4>{c.title}</h4>
+                <Link to={'/home/:'+c.id} className={classes.title}><h4>{c.title}</h4>
+                </Link>
                 <br />
                 <h5>{c.releaseDate}</h5>
                 <p>{c.openingText}</p>
