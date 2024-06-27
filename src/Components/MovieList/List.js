@@ -1,12 +1,14 @@
-import React, { useState,useRef, useEffect, useCallback } from "react";
+import React, { useState,useRef, useEffect, useCallback, useContext } from "react";
 import { Button, Container } from "react-bootstrap";
 import classes from './List.module.css'
 import Items from './Items'
+import FilmContext from "../../Store/FilmContext";
 
 const List=(props)=>{
 
     const url='https://react-http-7ffef-default-rtdb.firebaseio.com/movies.json'
-    const [movies,setMovies]=useState([]);
+    const ctx=useContext(FilmContext)
+    
     const [isLoading,setIsLoading]=useState(false);
     const [error,setError]=useState(false);
     const [retry,setRetry]=useState(true);
@@ -52,8 +54,8 @@ const List=(props)=>{
         console.log(movies)
 
       
-        
-        setMovies(movies)
+        ctx.setData(movies)
+   
         setIsLoading(false)
        
     }
@@ -73,7 +75,7 @@ const List=(props)=>{
             if (retryTimeoutRef.current) {
               clearTimeout(retryTimeoutRef.current);
             }
-          }},[props.dummy])
+          }},[ctx.movies.length])
 
 
 
@@ -82,14 +84,9 @@ const List=(props)=>{
             const response=await fetch('https://react-http-7ffef-default-rtdb.firebaseio.com/movies/'+id+'.json',{method:'DELETE'})
            if(response.ok){
 
-             setMovies(
-          (curr)=>{const a=curr.filter(
-            (c,i,a)=>{
-            return(!(c.id==id))})
-          console.log(a)
-        return a;}
-             
-             )
+            ctx.removeMovie(id)
+
+        
            
            }
            else{throw new Error('Something went wrong!!during deletion')}
@@ -100,7 +97,7 @@ const List=(props)=>{
         })
           
 
-        console.log('dummy'+props.dummy);
+        
 
     return(
         <React.Fragment>
@@ -108,7 +105,7 @@ const List=(props)=>{
                
             <Button onClick={startRetry} variant="secondary" >Get Data</Button>
   {}
-  {error!=false?<p>{error+ retry} <Button onClick={cancelRetry} variant="danger">X</Button></p> :isLoading==true?<p>loading...</p>:<p className={classes.item}><Items movies={movies} delete={deleteItem}></Items></p>}
+  {error!=false?<p>{error+ retry} <Button onClick={cancelRetry} variant="danger">X</Button></p> :isLoading==true?<p>loading...</p>:<p className={classes.item}><Items movies={ctx.movies} delete={deleteItem}></Items></p>}
   
                         </Container>
         </React.Fragment>

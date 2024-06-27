@@ -1,6 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Button, Container, FormLabel,Form, FormText, FormControl } from "react-bootstrap";
 import classes from './MovieForm.module.css'
+import FilmContext from "../../Store/FilmContext";
 
 
 const MovieForm =(props)=>{
@@ -8,6 +9,7 @@ const MovieForm =(props)=>{
     
     const [formValues,setFormValues]=useState({title:'',openingText:'',releaseDate:''});
    const [formErrors,setformErrors]=useState({title:'',openingText:'',releaseDate:''})
+    const ctx=useContext(FilmContext)
 
     const changeHandler=(e)=>{
         setFormValues((curr)=>{ return {...curr,[e.target.name]:e.target.value}})
@@ -24,15 +26,20 @@ const MovieForm =(props)=>{
                 }
 
             })
+
             if(!response.ok)throw new Error('something went wrong')
             else{
                 setFormValues({title:'',openingText:'',releaseDate:''})
 
-                props.itemAdd();
+                
+                const data=await response.json();
+                movie.id=data.name;
+                ctx.addMovie(movie);
+                console.log(movie)
             }
-            const data=await response.json();
+            
 
-           console.log(data)
+           
         }catch(err){
             console.log(err.message)
         }
